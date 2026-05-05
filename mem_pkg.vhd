@@ -4,15 +4,13 @@ use IEEE.NUMERIC_STD.ALL;
 
 package mem_pkg is
 
-    constant ADDR_WIDTH : integer := 4;
-    constant DATA_WIDTH : integer := 8;
-    constant MEM_DEPTH  : integer := 16;
+    constant DATA_WIDTH_C : positive := 8;
+    constant ADDR_WIDTH_C : positive := 4;
+    constant MEM_DEPTH_C  : positive := 16;
 
-    subtype addr_t is STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    subtype data_t is STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    subtype addr_t is STD_LOGIC_VECTOR(ADDR_WIDTH_C-1 downto 0);
+    subtype data_t is STD_LOGIC_VECTOR(DATA_WIDTH_C-1 downto 0);
     subtype seg7_t is STD_LOGIC_VECTOR(6 downto 0);
-
-    type mem_t is array (0 to MEM_DEPTH-1) of data_t;
 
     function hex_to_7seg(hex : STD_LOGIC_VECTOR(3 downto 0)) return seg7_t;
 
@@ -24,8 +22,8 @@ package body mem_pkg is
     function hex_to_7seg(hex : STD_LOGIC_VECTOR(3 downto 0)) return seg7_t is
         variable seg : seg7_t;
     begin
-        -- Display de 7 segmentos activo en bajo
-        -- Formato: seg(6 downto 0) = g f e d c b a
+        -- Display activo en bajo
+        -- Formato: g f e d c b a
 
         case hex is
             when "0000" => seg := "1000000"; -- 0
@@ -44,7 +42,7 @@ package body mem_pkg is
             when "1101" => seg := "0100001"; -- d
             when "1110" => seg := "0000110"; -- E
             when "1111" => seg := "0001110"; -- F
-            when others => seg := "1111111"; -- apagado
+            when others => seg := "1111111";
         end case;
 
         return seg;
